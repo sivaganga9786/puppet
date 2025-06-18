@@ -55,19 +55,19 @@ class jboss_integration::jboss_eap {
     require => Exec['jboss_installer_manager'],
   }
 
-  file_line { 'set_java_home_in_add_user':
-    path    => "${jboss_install_dir}/bin/add-user.sh",
-    line    => 'export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64',
-    match   => '^export JAVA_HOME=',
-    require => Exec['add_jboss_user'],
-  }
+  # file_line { 'set_java_home_in_add_user':
+  #   path    => "${jboss_install_dir}/bin/add-user.sh",
+  #   line    => 'export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64',
+  #   match   => '^export JAVA_HOME=',
+  #   require => Exec['add_jboss_user'],
+  # }
 
-  file_line { 'set_path_in_add_user':
-    path    => "${jboss_install_dir}/bin/add-user.sh",
-    line    => 'export PATH=$JAVA_HOME/bin:$PATH',
-    match   => '^export PATH=\$JAVA_HOME/bin',
-    require => Exec['add_jboss_user'],
-  }
+  # file_line { 'set_path_in_add_user':
+  #   path    => "${jboss_install_dir}/bin/add-user.sh",
+  #   line    => 'export PATH=$JAVA_HOME/bin:$PATH',
+  #   match   => '^export PATH=\$JAVA_HOME/bin',
+  #   require => Exec['add_jboss_user'],
+  # }
 
   [
     "${jboss_home}/standalone/configuration/standalone.xml",
