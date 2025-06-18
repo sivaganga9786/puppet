@@ -1,0 +1,69 @@
+## -*- shell-script -*- ######################################################
+##                                                                          ##
+##  JBoss EAP Bootstrap Script Configuration                                ##
+##                                                                          ##
+##############################################################################
+
+#
+# This file is optional; it may be removed if not needed.
+#
+
+# Specify the maximum file descriptor limit
+#MAX_FD="maximum"
+
+# Specify the profiler configuration file to load
+#PROFILER=""
+
+# Specify the location of the Java home directory
+JAVA_HOME="$JAVA_HOME"
+
+# MALLOC_ARENA_MAX="5"
+
+#JAVA=""
+
+if [ "x$JBOSS_MODULES_SYSTEM_PKGS" = "x" ]; then
+   JBOSS_MODULES_SYSTEM_PKGS="org.jboss.byteman"
+fi
+
+#PRESERVE_JAVA_OPTS=true
+
+if [ "x$JDK_SERIAL_FILTER" = "x" ]; then
+   JDK_SERIAL_FILTER="maxbytes=10485760;maxdepth=128;maxarray=100000;maxrefs=300000"
+fi
+
+#DISABLE_JDK_SERIAL_FILTER=true
+
+# Specify options to pass to the Java VM
+if [ "x$JBOSS_JAVA_SIZING" = "x" ]; then
+   JBOSS_JAVA_SIZING="-Xms1303m -Xmx1303m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m"
+fi
+
+if [ "x$JAVA_OPTS" = "x" ]; then
+   JAVA_OPTS="$JBOSS_JAVA_SIZING -Djava.net.preferIPv4Stack=true"
+   JAVA_OPTS="$JAVA_OPTS -Djboss.modules.system.pkgs=$JBOSS_MODULES_SYSTEM_PKGS -Djava.awt.headless=true"
+else
+   echo "JAVA_OPTS already set in environment; overriding default settings with values: $JAVA_OPTS"
+fi
+
+# Sample JPDA settings for debugging
+#JAVA_OPTS="$JAVA_OPTS -agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=n"
+
+#JAVA_OPTS="$JAVA_OPTS -agentlib:jdwp=transport=dt_shmem,server=y,suspend=n,address=jboss"
+
+#JAVA_OPTS="$JAVA_OPTS -Djboss.modules.lockless=false"
+
+# ✅ Add custom log path and bind address using Puppet variables
+JAVA_OPTS="$JAVA_OPTS -Djboss.server.log.dir=<%= $jboss_logpath %> -Djboss.bind.address=<%= $fqdn_name %>"
+
+#JAVA_OPTS="$JAVA_OPTS -Djboss.modules.metrics=true"
+#JAVA_OPTS="$JAVA_OPTS -Dnet.bytebuddy.experimental=true"
+#SECMGR="true"
+#JAVA_OPTS="$JAVA_OPTS -Djava.nio.channels.spi.SelectorProvider=sun.nio.ch.PollSelectorProvider"
+#JAVA_OPTS="$JAVA_OPTS -Djava.security.properties==/path/to/custom/java.security"
+#MODULE_OPTS="-javaagent:agent.jar"
+
+if [ "x$GC_LOG" = "x" ]; then
+   GC_LOG="true"
+else
+   echo "GC_LOG set in environment to $GC_LOG"
+fi
